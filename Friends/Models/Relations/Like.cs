@@ -6,6 +6,6 @@
         public int PostID { get; set; }
 
         // FK to Person
-        public string PersonId { get; set; }
+        public string PersonUsername { get; set; }
     }
 }
