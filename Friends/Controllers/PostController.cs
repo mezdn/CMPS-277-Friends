@@ -11,11 +11,11 @@ namespace Friends.Controllers
     public class PostController : Controller
     {
         // GET: Post
-        public ActionResult Index(int userID)
+        public ActionResult Index(string username)
         {
             // TODO #1: 
-            // <query> Select all posts owned by person with ID `userID` </query>
-            // <input> id, userID </input>
+            // <query> Select all posts owned by person with Username `username` </query>
+            // <input> id, username </input>
             // <output> List of Posts </output>
 
             return View();
@@ -40,13 +40,13 @@ namespace Friends.Controllers
         // POST: Post/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int userID, [Bind("ID,TimeOfCreation,Content,GroupID")] Post post)
+        public ActionResult Create(string username, [Bind("ID,TimeOfCreation,Content,GroupID")] Post post)
         {
             try
             {
                 // TODO #3: 
                 // <query> Create a new post given its properties </query>
-                // <input> post(ID, TimeOfCreation, Content, userID, GroupID) </input>
+                // <input> post(ID, TimeOfCreation, Content, username, GroupID) </input>
 
                 return RedirectToAction(nameof(Index));
             }
@@ -66,13 +66,13 @@ namespace Friends.Controllers
         // POST: Post/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, int userID, [Bind("ID,TimeOfCreation,Content,GroupID")] Post post)
+        public ActionResult Edit(int id, string username, [Bind("ID,TimeOfCreation,Content,GroupID")] Post post)
         {
             try
             {
                 // TODO #5: 
-                // <query> Edit an old post given its id and the new vlaues of its properties IF it is owned by a user of ID userID</query>
-                // <input> post(ID, TimeOfCreation, Content, GroupID), userID </input>
+                // <query> Edit an old post given its id and the new vlaues of its properties IF it is owned by a user of Username `username` </query>
+                // <input> post(ID, TimeOfCreation, Content, GroupID), username </input>
 
                 return RedirectToAction(nameof(Index));
             }
@@ -86,8 +86,8 @@ namespace Friends.Controllers
         public ActionResult Delete(int id, int userID)
         {
             // TODO #6: 
-            // <query> Get a post of ID `id` if its owner has id `userID` </query>
-            // <input> id, userID </input>
+            // <query> Get a post of ID `id` if its owner has Username `username` </query>
+            // <input> id, username </input>
             // <output> post </output>
 
             return View();
