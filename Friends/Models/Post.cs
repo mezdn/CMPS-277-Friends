@@ -15,5 +15,8 @@ namespace Friends.Models
 
         // FK to Group
         public int GroupID { get; set; }
+
+        // Not Mapped to the Database
+        public string CategoryName { get; set; }
     }
 }

@@ -95,7 +95,6 @@ namespace Friends.Controllers
                 // TODO #12: 
                 // <query> Edit an old Category given its id and the ne values of its properties </query>
                 // <input> id, Category(Name, AreaOfExpertiseName) </input>
-                // <input> Category </input>
                 
                 return RedirectToAction(nameof(Index));
             }

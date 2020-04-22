@@ -40,7 +40,7 @@ namespace Friends.Controllers
         // POST: Post/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string username, [Bind("ID,TimeOfCreation,Content,GroupID")] Post post)
+        public ActionResult Create(string username, [Bind("ID,TimeOfCreation,CategoryName,Content,GroupID")] Post post)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Friends.Controllers
         // POST: Post/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, string username, [Bind("ID,TimeOfCreation,Content,GroupID")] Post post)
+        public ActionResult Edit(int id, string username, [Bind("ID,TimeOfCreation,CategoryName,Content,GroupID")] Post post)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace Friends.Controllers
         }
 
         // GET: Post/Delete/5
-        public ActionResult Delete(int id, int userID)
+        public ActionResult Delete(int id, string username)
         {
             // TODO #6: 
             // <query> Get a post of ID `id` if its owner has Username `username` </query>
@@ -110,6 +110,26 @@ namespace Friends.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public ActionResult LikePost(int id, string username)
+        {
+            // TODO #43: 
+            // <query> If user of username `username` didn't like post of ID `id`, add a like </query>
+            // <input> id, username </input>
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DislikePost(int id, string username)
+        {
+            // TODO #44: 
+            // <query> If user of username `username` likes post of ID `id`, remove the like </query>
+            // <input> id, username </input>
+
+            return View();
         }
     }
 }
