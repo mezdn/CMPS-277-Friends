@@ -7,10 +7,10 @@ namespace Friends.Models
         public int ID { get; set; }
 
         // FK to Person
-        public string SenderUsername { get; set; }
+        public string SenderId { get; set; }
 
         // FK to Person
-        public string RecieverUsername { get; set; }
+        public string RecieverId { get; set; }
 
         public DateTime TimeOfSending { get; set; }
 

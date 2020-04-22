@@ -3,9 +3,9 @@
     public class AreFriends
     {
         // FK to Person
-        public string PersonUsernameA { get; set; }
+        public string PersonIdA { get; set; }
 
         // FK to Person
-        public string PersonUsernameB { get; set; }
+        public string PersonIdB { get; set; }
     }
 }

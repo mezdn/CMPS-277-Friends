@@ -4,6 +4,9 @@ namespace Friends.Models
 {
     public class Person
     {
+        // Primary Key: Added by Mohammed
+        public int Id { get; set; }
+
         public string Username { get; set; }
 
         // FK to Area of Expertise

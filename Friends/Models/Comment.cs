@@ -11,7 +11,7 @@ namespace Friends.Models
         public string Content { get; set; }
 
         // FK to Person
-        public string PersonUsername { get; set; }
+        public string PersonId { get; set; }
 
         // FK to Post
         public int PostID { get; set; }

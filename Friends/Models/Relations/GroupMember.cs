@@ -3,7 +3,7 @@
     public class GroupMember
     {
         // FK to Person
-        public string MemberUsername { get; set; }
+        public string MemberId { get; set; }
 
         // FK to Group
         public int GroupID { get; set; }

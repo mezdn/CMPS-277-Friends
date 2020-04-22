@@ -7,7 +7,7 @@ namespace Friends.Models
         public int ID { get; set; }
         
         // FKto Person
-        public string AdminUsername { get; set; }
+        public string AdminId{ get; set; }
 
         public string Name { get; set; }
 
