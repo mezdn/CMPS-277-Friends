@@ -16,5 +16,8 @@ namespace Friends.Models
         public string Country { get; set; }
         
         public string Password { get; set; }
+
+        // Not Mapped to the database
+        public bool isFriend { get; set; }
     }
 }

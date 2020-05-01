@@ -30,11 +30,12 @@ namespace Friends.Controllers
         // POST: Message/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("ID,SenderUsername,RecieverUsername,Content")] Message message)
+        public ActionResult Create(string senderUsername, [Bind("ID,RecieverUsername,Content")] Message message)
         {
             try
             {
                 message.TimeOfSending = DateTime.Now;
+                message.SenderUsername = senderUsername;
 
                 // TODO #23: 
                 // <query> Create a new Message given its properties </query>

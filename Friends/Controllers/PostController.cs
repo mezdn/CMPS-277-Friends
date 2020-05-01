@@ -40,10 +40,11 @@ namespace Friends.Controllers
         // POST: Post/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string username, [Bind("ID,TimeOfCreation,CategoryName,Content,GroupID")] Post post)
+        public ActionResult Create(string username, [Bind("ID,CategoryName,Content,GroupID")] Post post)
         {
             try
             {
+                post.TimeOfCreation = DateTime.Now;
                 // TODO #3: 
                 // <query> Create a new post given its properties </query>
                 // <input> post(ID, TimeOfCreation, Content, username, GroupID) </input>
@@ -66,13 +67,13 @@ namespace Friends.Controllers
         // POST: Post/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, string username, [Bind("ID,TimeOfCreation,CategoryName,Content,GroupID")] Post post)
+        public ActionResult Edit(int id, string username, [Bind("CategoryName,Content")] Post post)
         {
             try
             {
                 // TODO #5: 
                 // <query> Edit an old post given its id and the new vlaues of its properties IF it is owned by a user of Username `username` </query>
-                // <input> post(ID, TimeOfCreation, Content, GroupID), username </input>
+                // <input> post(CategoryName, Content), username </input>
 
                 return RedirectToAction(nameof(Index));
             }

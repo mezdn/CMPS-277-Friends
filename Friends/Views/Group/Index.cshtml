@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Friends.Models.Category>
+﻿@model IEnumerable<Friends.Models.Group>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,13 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.AdminUsername)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AreaOfExpertiseName)
+                @Html.DisplayNameFor(model => model.DateOfCreation)
             </th>
             <th></th>
         </tr>
@@ -26,10 +29,13 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.AdminUsername)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AreaOfExpertiseName)
+                    @Html.DisplayFor(modelItem => item.DateOfCreation)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

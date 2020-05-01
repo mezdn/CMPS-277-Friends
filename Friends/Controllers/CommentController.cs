@@ -30,11 +30,13 @@ namespace Friends.Controllers
         // POST: Comment/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("ID,Content,PersonUsername,PostID")] Comment comment)
+        public ActionResult Create(int postID, string personUsername [Bind("ID,Content")] Comment comment)
         {
             try
             {
                 comment.TimeOfCreation = DateTime.Now;
+                comment.PostID = postID;
+                comment.PersonUsername = personUsername;
 
                 // TODO #29: 
                 // <query> Create a new Comment given its properties </query>

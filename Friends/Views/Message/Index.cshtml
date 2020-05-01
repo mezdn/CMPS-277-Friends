@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Friends.Models.Category>
+﻿@model IEnumerable<Friends.Models.Message>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.SenderUsername)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AreaOfExpertiseName)
+                @Html.DisplayNameFor(model => model.RecieverUsername)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeOfSending)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
             </th>
             <th></th>
         </tr>
@@ -26,10 +32,16 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.SenderUsername)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AreaOfExpertiseName)
+                    @Html.DisplayFor(modelItem => item.RecieverUsername)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeOfSending)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

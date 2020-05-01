@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Friends.Models.Category>
+﻿@model IEnumerable<Friends.Models.AreaOfExpertise>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AreaOfExpertiseName)
+                @Html.DisplayNameFor(model => model.YearEmerged)
             </th>
             <th></th>
         </tr>
@@ -29,14 +29,15 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AreaOfExpertiseName)
+                    @Html.DisplayFor(modelItem => item.YearEmerged)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Name">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Name">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Name">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
