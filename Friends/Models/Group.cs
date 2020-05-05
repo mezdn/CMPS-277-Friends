@@ -11,6 +11,6 @@ namespace Friends.Models
 
         public string Name { get; set; }
 
-        public DateTime DateOfCreation { get; set; }
+        public long DateOfCreation { get; set; }
     }
 }

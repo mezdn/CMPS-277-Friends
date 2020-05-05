@@ -6,7 +6,7 @@ namespace Friends.Models
     {
         public int ID { get; set; }
         
-        public DateTime TimeOfCreation { get; set; }
+        public long TimeOfCreation { get; set; }
 
         public string Content { get; set; }
 

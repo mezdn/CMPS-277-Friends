@@ -6,6 +6,6 @@ namespace Friends.Models
     {
         public string Name { get; set; }
         
-        public DateTime YearEmerged { get; set; }
+        public int YearEmerged { get; set; }
     }
 }
