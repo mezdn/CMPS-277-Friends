@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Friends.Models;
 using Friends.Storage;
+using System.Linq;
 
 namespace Friends.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly CategoriesStore _categoriesStore;
+        private readonly AreaOfExpertiseStore _areaOfExpertiseStore;
+        public static IEnumerable<string> AreasOfExpertise;
 
-        public CategoriesController(CategoriesStore categoriesStore)
+        public CategoriesController(CategoriesStore categoriesStore, AreaOfExpertiseStore areaOfExpertiseStore)
         {
             _categoriesStore = categoriesStore;
+            _areaOfExpertiseStore = areaOfExpertiseStore;
         }
 
         // GET: Categories
@@ -27,6 +27,8 @@ namespace Friends.Controllers
             // <output> List of Categories </output>
 
             List<Category> categories = await _categoriesStore.GetCategories();
+            AreasOfExpertise = (await _areaOfExpertiseStore.GetAreas()).Select(a => a.Name);
+
             return View(categories);
         }
 
@@ -39,6 +41,7 @@ namespace Friends.Controllers
             }
 
             var category = await _categoriesStore.GetCategory((int)id);
+
             // TODO #9: done
             // <query> Select all properties of a Category of ID `id` </query>
             // <input> id </input>
