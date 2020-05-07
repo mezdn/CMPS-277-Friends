@@ -1,4 +1,4 @@
-﻿@model Friends.Models.Group
+﻿@model Friends.Models.GroupMemberObject
 
 @{
     ViewData["Title"] = "Details";
@@ -7,30 +7,47 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Category</h4>
+    <h4>Group</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Group.Name)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Group.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AdminUsername)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Group.AdminUsername)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AdminUsername)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Group.AdminUsername)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfCreation)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Group.DateOfCreationDate)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfCreation)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Group.DateOfCreationDate)
+        </dd>
+        <dt class="col-sm-2">
+            Is Member
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model != null && Model.isMember && Friends.Controllers.HomeController.usernameSignedIn != null)
+            {
+                <i class="fas fa-check" style="color: forestgreen"></i>
+                <a asp-action="ExitGroup" asp-route-id="@Model.Group.ID">Exit Group</a>
+            }
+            else
+            {
+                <i class="fas fa-times" style="color: red"></i>
+                if (Friends.Controllers.HomeController.usernameSignedIn != null)
+                {
+                    <a asp-action="EnterGroup" asp-route-id="@Model.Group.ID">Enter Group</a>
+                }
+            }
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
