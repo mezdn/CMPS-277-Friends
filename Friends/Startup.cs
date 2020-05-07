@@ -30,6 +30,7 @@ namespace Friends
             string connectionString = "server=mysql6002.site4now.net; database=db_a4c491_friends; uid=a4c491_friends; pwd=Gu6eXI85#44u;";
             services.AddTransient<MySqlDatabase>(_ => new MySqlDatabase(connectionString));
             services.AddTransient<AreaOfExpertiseStore>();
+            services.AddTransient<PersonStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

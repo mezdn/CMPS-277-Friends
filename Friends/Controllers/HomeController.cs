@@ -9,6 +9,8 @@ namespace Friends.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        public static string usernameSignedIn = null;
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;

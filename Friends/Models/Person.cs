@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Friends.Models
 {
@@ -7,11 +8,16 @@ namespace Friends.Models
         public string Username { get; set; }
 
         // FK to Area of Expertise
+        [DisplayName("Area of Expertise")]
         public string AreaOfExpertiseName { get; set; }
 
+        [DisplayName("Display Name")]
         public string DisplayName { get; set; }
         
+        [DisplayName("Date of Birth")]
         public long DateOfBirth { get; set; }
+
+        public DateTime DateOfBirthDate { get; set; }
         
         public string Country { get; set; }
         

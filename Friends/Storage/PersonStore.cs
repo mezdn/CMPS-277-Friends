@@ -44,9 +44,17 @@ namespace Friends.Storage
         public async Task<IsFriendObject> GetPerson(string usernameA, string usernameB)
         {
             var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT p.username, p.displayName, p.country, p.dateOfBirth, p.areaOfExpertiseName, f.user2 
-                                FROM person as p LEFT OUTER JOIN friends as f ON p.username = f.user1 
-                                WHERE p.username = @usernameA AND f.user2 = @usernameB";
+
+            //@"SELECT p.username, p.displayName, p.country, p.dateOfBirth, p.areaOfExpertiseName, f.user2 
+            //              FROM person as p LEFT OUTER JOIN friends as f ON p.username = f.user1
+            //              WHERE p.username = f.user1 AND p.username = @usernameA AND f.user2 = @usernameB";
+
+            // TODO: Test correctness for the following query
+            cmd.CommandText = @"SELECT p.username, p.displayName, p.country, p.dateOfBirth, p.areaOfExpertiseName, (
+                                    SELECT COUNT(*) FROM friends f WHERE f.user1 = p.username AND f.user2 = @usernameB)
+                                FROM person as p
+                                WHERE p.username = @usernameA";
+
             cmd.Parameters.AddWithValue("@usernameA", usernameA);
             cmd.Parameters.AddWithValue("@usernameB", usernameB);
 
@@ -65,11 +73,18 @@ namespace Friends.Storage
                     var isFriendObject = new IsFriendObject
                     {
                         Person = person,
-                        Username2 = null
+                        isFriend = false
                     };
                     if (!reader.IsDBNull(5))
                     {
-                        isFriendObject.Username2 = reader.GetFieldValue<string>(5);
+                        if (reader.GetFieldValue<long>(5) != 0)
+                        {
+                            isFriendObject.isFriend = true;
+                        }
+                        else
+                        {
+                            isFriendObject.isFriend = false;
+                        }
                     }
                     return isFriendObject;
                 }
@@ -96,7 +111,7 @@ namespace Friends.Storage
         {
             var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
 
-            cmd.CommandText = @"INSERT INTO friends(user1, user2) VALUES (@usernameA, @username2);";
+            cmd.CommandText = @"INSERT INTO friends(user1, user2) VALUES (@usernameA, @usernameB);";
             cmd.Parameters.AddWithValue("@usernameA", usernameA);
             cmd.Parameters.AddWithValue("@usernameB", usernameB);
 
@@ -114,7 +129,7 @@ namespace Friends.Storage
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async Task<int> Authenticate(string username, string password)
+        public async Task<long> Authenticate(string username, string password)
         {
             var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"SELECT count(*) FROM person WHERE username = @username AND pass = @pass";
@@ -125,7 +140,7 @@ namespace Friends.Storage
             {
                 while (await reader.ReadAsync())
                 {
-                    return reader.GetFieldValue<int>(0);
+                    return reader.GetFieldValue<long>(0);
                 }
             }
             return 0;
