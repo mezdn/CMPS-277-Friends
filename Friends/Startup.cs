@@ -31,6 +31,11 @@ namespace Friends
             services.AddTransient<MySqlDatabase>(_ => new MySqlDatabase(connectionString));
             services.AddTransient<AreaOfExpertiseStore>();
             services.AddTransient<PersonStore>();
+            services.AddTransient<MessageStore>();
+            services.AddTransient<CategoriesStore>();
+            services.AddTransient<GroupStore>();
+            services.AddTransient<PostStore>();
+            services.AddTransient<CommentStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

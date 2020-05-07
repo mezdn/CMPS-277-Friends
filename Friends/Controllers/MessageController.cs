@@ -19,18 +19,31 @@ namespace Friends.Controllers
         }
 
         // GET: Message
-        public async Task<ActionResult> Index(string usernameA, string usernameB)
+        [Route("Message/{username}")]
+        public async Task<ActionResult> Index(string username)
         {
             // TODO #22: 
             // <query> Select all messages between two users A having usernameA and B having usernameB (2 cases from A to B and from B to A) </query>
             // <input> usernameA, usernameB </input>
             // <output> List of messages </output>
-            List<Message> messages = await _messageStore.GetMessages(usernameA, usernameB);
-            return View();
+            if (HomeController.usernameSignedIn != null)
+            {
+                List<Message> messages = await _messageStore.GetMessages(username, HomeController.usernameSignedIn);
+
+                foreach (var msg in messages)
+                {
+                    msg.TimeOfSendingDate = new DateTime(msg.TimeOfSending);
+                }
+
+                return View(messages);
+            }
+            return RedirectToAction(nameof(Index), nameof(PersonController));
         }
 
         // GET: Message/Create
-        public ActionResult Create()
+        [HttpGet]
+        [Route("Message/Create/{username}")]
+        public ActionResult Create(string username)
         {
             return View();
         }
@@ -38,23 +51,29 @@ namespace Friends.Controllers
         // POST: Message/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(string senderUsername, [Bind("ID,RecieverUsername,Content")] Message message)
+        [Route("Message/Create/{username}")]
+        public async Task<ActionResult> Create(string username, [Bind("ID,Content")] Message message)
         {
-            try
-            {
-                message.TimeOfSending = DateTime.Now.Ticks;
-                message.SenderUsername = senderUsername;
+            //try
+            //{
+                if (HomeController.usernameSignedIn != null)
+                {
+                    message.TimeOfSending = DateTime.Now.Ticks;
+                    message.RecieverUsername = username;
+                    message.SenderUsername = HomeController.usernameSignedIn;
 
-                // TODO #23: 
-                // <query> Create a new Message given its properties </query>
-                // <input> Message(ID, SenderUsername, RecieverUsername, TimeOfSending, Content) </input>
-                await _messageStore.CreateMessage(message);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+                    // TODO #23: 
+                    // <query> Create a new Message given its properties </query>
+                    // <input> Message(ID, SenderUsername, RecieverUsername, TimeOfSending, Content) </input>
+                    await _messageStore.CreateMessage(message);
+                    return RedirectToAction(nameof(Index), new { username = message.RecieverUsername });
+                }
+                return RedirectToAction(nameof(Index), nameof(PersonController), new { username = message.RecieverUsername });
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
     }
 }
