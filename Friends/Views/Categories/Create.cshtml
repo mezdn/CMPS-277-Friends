@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Create";
+
+    var areasOfExpertise = Friends.Controllers.CategoriesController.AreasOfExpertise;
 }
 
 <h1>Create</h1>
@@ -19,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="AreaOfExpertiseName" class="control-label"></label>
-                <input asp-for="AreaOfExpertiseName" class="form-control" />
+                <select asp-for="AreaOfExpertiseName" class="form-control" asp-items="new SelectList(areasOfExpertise)"/>
                 <span asp-validation-for="AreaOfExpertiseName" class="text-danger"></span>
             </div>
             <div class="form-group">

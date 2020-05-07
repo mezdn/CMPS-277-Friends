@@ -25,7 +25,6 @@ namespace Friends.Controllers
             // <query> Select all comments on a post with ID `postID`</query>
             // <input> postID </input>
             // <output> List of comments </output>
-
             List<Comment> comments = await _commentStore.GetComments(postID);
             return View(comments);
         }
@@ -50,6 +49,7 @@ namespace Friends.Controllers
                 // TODO #29: Done
                 // <query> Create a new Comment given its properties </query>
                 // <input> Comment(ID, Content, PersonUsername, PostID, TimeOfSending) </input>
+
                 await _commentStore.CreateComment(comment);
 
                 return RedirectToAction(nameof(Index));
