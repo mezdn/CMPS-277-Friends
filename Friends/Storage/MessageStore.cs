@@ -18,7 +18,27 @@ namespace Friends.Storage
 
         public async Task<List<Message>> GetMessages(string user1, string user2)
         {
-            return null;
+            var ret = new List<Message>();
+
+            var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT id, content, recieverUsername, senderUsername, timeOfSending FROM message";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    var message = new Message
+                    {
+                        ID = reader.GetFieldValue<int>(0),
+                        Content = reader.GetFieldValue<string>(1),
+                        RecieverUsername = reader.GetFieldValue<string>(2),
+                        SenderUsername = reader.GetFieldValue<string>(3),
+                        TimeOfSending = reader.GetFieldValue<long>(4)
+                    };
+                    ret.Add(message);
+                }
+            }
+            return ret;
         }
 
         public async Task CreateMessage(Message message)

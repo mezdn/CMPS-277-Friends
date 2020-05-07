@@ -11,7 +11,7 @@ namespace Friends.Models
 
         public string DisplayName { get; set; }
         
-        public DateTime DateOfBirth { get; set; }
+        public long DateOfBirth { get; set; }
         
         public string Country { get; set; }
         

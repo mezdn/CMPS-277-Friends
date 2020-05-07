@@ -12,7 +12,7 @@ namespace Friends.Models
         // FK to Person
         public string RecieverUsername { get; set; }
 
-        public DateTime TimeOfSending { get; set; }
+        public long TimeOfSending { get; set; }
 
         public string Content { get; set; }
     }
