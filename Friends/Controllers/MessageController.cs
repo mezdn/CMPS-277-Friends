@@ -42,7 +42,7 @@ namespace Friends.Controllers
         {
             try
             {
-                message.TimeOfSending = DateTime.Now;
+                message.TimeOfSending = DateTimeOffset.Now.ToUnixTimeSeconds();
                 message.SenderUsername = senderUsername;
 
                 // TODO #23: 
