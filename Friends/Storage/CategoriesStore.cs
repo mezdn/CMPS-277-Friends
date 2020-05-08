@@ -61,7 +61,7 @@ namespace Friends.Storage
         {
             var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
 
-            cmd.CommandText = @"INSERT INTO Cateogry(id, name, areaOfExpertiseName) VALUES (@id, @name, @areaOfExpertiseName);";
+            cmd.CommandText = @"INSERT INTO Category(name, areaOfExpertiseName) VALUES (@name, @areaOfExpertiseName);";
             cmd.Parameters.AddWithValue("@name", category.Name);
             cmd.Parameters.AddWithValue("@areaOfExpertiseName", category.AreaOfExpertiseName);
 

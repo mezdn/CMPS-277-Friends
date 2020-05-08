@@ -22,10 +22,6 @@ namespace Friends.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            // TODO #8: done
-            // <query> Select all Categories </query>
-            // <output> List of Categories </output>
-
             List<Category> categories = await _categoriesStore.GetCategories();
             AreasOfExpertise = (await _areaOfExpertiseStore.GetAreas()).Select(a => a.Name);
 
@@ -41,11 +37,6 @@ namespace Friends.Controllers
             }
 
             var category = await _categoriesStore.GetCategory(name);
-
-            // TODO #9: done
-            // <query> Select all properties of a Category of ID `id` </query>
-            // <input> id </input>
-            // <output> Category </output>
 
             if (category == null)
             {
@@ -68,9 +59,6 @@ namespace Friends.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO #10: Done
-                // <query> Create a new Category given its properties </query>
-                // <input> Category(ID, Name, AreaOfExpertiseName) </input>
                 await _categoriesStore.CreateCategory(category);
                 
                 return RedirectToAction(nameof(Index));
