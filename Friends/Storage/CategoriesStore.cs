@@ -16,11 +16,44 @@ namespace Friends.Storage
 
         public async Task<List<Category>> GetCategories()
         {
-            return null;
+            var ret = new List<Category>();
+
+            var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT name, areaOfExpertiseName FROM category";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    var category = new Category
+                    {
+                        Name = reader.GetFieldValue<string>(0),
+                        AreaOfExpertiseName = reader.GetFieldValue<string>(1)
+                    };
+                    ret.Add(category);
+                }
+            }
+            return ret;
         }
 
-        public async Task<Category> GetCategory(int id)
+        public async Task<Category> GetCategory(string name)
         {
+            var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT name, areaOfExpertiseName FROM category WHERE name = @name";
+            cmd.Parameters.AddWithValue("@name", name);
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    var category = new Category
+                    {
+                        Name = reader.GetFieldValue<string>(0),
+                        AreaOfExpertiseName = reader.GetFieldValue<string>(1)
+                    };
+                    return category;
+                }
+            }
             return null;
         }
 
@@ -29,7 +62,6 @@ namespace Friends.Storage
             var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
 
             cmd.CommandText = @"INSERT INTO Cateogry(id, name, areaOfExpertiseName) VALUES (@id, @name, @areaOfExpertiseName);";
-            cmd.Parameters.AddWithValue("@id", category.ID);
             cmd.Parameters.AddWithValue("@name", category.Name);
             cmd.Parameters.AddWithValue("@areaOfExpertiseName", category.AreaOfExpertiseName);
 

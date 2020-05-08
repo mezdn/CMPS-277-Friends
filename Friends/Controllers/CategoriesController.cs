@@ -33,14 +33,14 @@ namespace Friends.Controllers
         }
 
         // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string name)
         {
-            if (id == null)
+            if (name == null)
             {
                 return NotFound();
             }
 
-            var category = await _categoriesStore.GetCategory((int)id);
+            var category = await _categoriesStore.GetCategory(name);
 
             // TODO #9: done
             // <query> Select all properties of a Category of ID `id` </query>

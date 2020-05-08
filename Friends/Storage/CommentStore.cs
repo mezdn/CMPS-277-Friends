@@ -16,7 +16,28 @@ namespace Friends.Storage
 
         public async Task<List<Comment>> GetComments(int postId)
         {
-            return null;
+            var ret = new List<Comment>();
+
+            var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT id, personUsername, content, TimeOfSending FROM commment WHERE postId = @postId";
+            cmd.Parameters.AddWithValue("@postId", postId);
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    var comment = new Comment
+                    {
+                        ID = reader.GetFieldValue<int>(0),
+                        PostID = postId,
+                        PersonUsername = reader.GetFieldValue<string>(1),
+                        Content = reader.GetFieldValue<string>(2),
+                        TimeOfCreation = reader.GetFieldValue<long>(3)
+                    };
+                    ret.Add(comment);
+                }
+            }
+            return ret;
         }
 
         public async Task CreateComment(Comment comment)

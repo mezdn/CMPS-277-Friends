@@ -75,16 +75,14 @@ namespace Friends.Storage
                         Person = person,
                         isFriend = false
                     };
-                    if (!reader.IsDBNull(5))
+
+                    if (reader.GetFieldValue<long>(5) != 0)
                     {
-                        if (reader.GetFieldValue<long>(5) != 0)
-                        {
-                            isFriendObject.isFriend = true;
-                        }
-                        else
-                        {
-                            isFriendObject.isFriend = false;
-                        }
+                        isFriendObject.isFriend = true;
+                    }
+                    else
+                    {
+                        isFriendObject.isFriend = false;
                     }
                     return isFriendObject;
                 }

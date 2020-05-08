@@ -42,13 +42,8 @@ namespace Friends.Storage
         public async Task<GroupMemberObject> GetGroupAndMember(int id, String username)
         {
             var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
-            //cmd.CommandText = @"SELECT g.id, g.name, g.adminUsername, g.dateOfCreation, m.username FROM groups as g
-            //                    LEFT OUTER JOIN groupmember as m ON g.id = m.groupId
-            //                    WHERE g.id = @id AND m.username = @username";
-
-            // TODO: Prove the correctness of the following query
             cmd.CommandText = @"SELECT g.id, g.name, g.adminUsername, g.dateOfCreation, ( 
-                                    SELECT COUNT(*) FROM groupmember as m WHERE g.id = m.groupId AND m.username = @username)
+                                    SELECT COUNT(*) FROM groupmember as m WHERE m.groupId = g.id AND m.username = @username)
                                 FROM groups as g
                                 WHERE g.id = @id";
             cmd.Parameters.AddWithValue("@id", id);
@@ -70,16 +65,14 @@ namespace Friends.Storage
                         Group = group,
                         isMember = false
                     };
-                    if (!reader.IsDBNull(4))
+
+                    if (reader.GetFieldValue<long>(4) != 0)
                     {
-                        if (reader.GetFieldValue<long>(4) != 0)
-                        {
-                            groupMemberObject.isMember = true;
-                        }
-                        else
-                        {
-                            groupMemberObject.isMember = false;
-                        }
+                        groupMemberObject.isMember = true;
+                    }
+                    else
+                    {
+                        groupMemberObject.isMember = false;
                     }
                     return groupMemberObject;
                 }

@@ -105,6 +105,7 @@ namespace Friends.Controllers
             // <input> id, username </input>
             // <output> post </output>
 
+            //Returns null if id doesn't exist or if username does not match
             Post post = await _postStore.GetPostVerify(id, username);
             return View(post);
         }
