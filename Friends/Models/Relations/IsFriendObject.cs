@@ -5,6 +5,6 @@ namespace Friends.Models
     public class IsFriendObject
     {
         public Person Person { get; set; }
-        public string Username2 { get; set; }
+        public bool isFriend { get; set; }
     }
 }
