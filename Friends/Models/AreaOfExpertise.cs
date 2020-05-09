@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Friends.Models
 {
@@ -6,6 +6,7 @@ namespace Friends.Models
     {
         public string Name { get; set; }
         
-        public DateTime YearEmerged { get; set; }
+        [Display(Name = "Year Emerged")]
+        public int YearEmerged { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Friends.Models
 {
@@ -7,10 +8,14 @@ namespace Friends.Models
         public int ID { get; set; }
         
         // FKto Person
+        [DisplayName("Admin")]
         public string AdminUsername { get; set; }
 
         public string Name { get; set; }
 
-        public DateTime DateOfCreation { get; set; }
+        public long DateOfCreation { get; set; }
+
+        [DisplayName("Date of Creation")]
+        public DateTime DateOfCreationDate { get; set; }
     }
 }

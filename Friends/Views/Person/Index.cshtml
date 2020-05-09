@@ -2,9 +2,11 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    var usernameSignedIn = Friends.Controllers.HomeController.usernameSignedIn;
 }
 
-<h1>Index</h1>
+<h1>Persons</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -22,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.AreaOfExpertiseName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
+                @Html.DisplayNameFor(model => model.DateOfBirthDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Country)
@@ -44,15 +46,13 @@
                     @Html.DisplayFor(modelItem => item.AreaOfExpertiseName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    @Html.DisplayFor(modelItem => item.DateOfBirthDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Country)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Username">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Username">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Username">Delete</a>
+                    <a asp-action="Details" asp-route-username="@item.Username">Details</a>
                 </td>
             </tr>
         }

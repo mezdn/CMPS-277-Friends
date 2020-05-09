@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Friends.Models;
+using Friends.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +26,16 @@ namespace Friends
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            string connectionString = "server=mysql6002.site4now.net; database=db_a4c491_friends; uid=a4c491_friends; pwd=Gu6eXI85#44u;";
+            services.AddTransient<MySqlDatabase>(_ => new MySqlDatabase(connectionString));
+            services.AddTransient<AreaOfExpertiseStore>();
+            services.AddTransient<PersonStore>();
+            services.AddTransient<MessageStore>();
+            services.AddTransient<CategoriesStore>();
+            services.AddTransient<GroupStore>();
+            services.AddTransient<PostStore>();
+            services.AddTransient<CommentStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

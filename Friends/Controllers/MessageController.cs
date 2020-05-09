@@ -1,28 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Friends.Models;
-using Microsoft.AspNetCore.Http;
+using Friends.Storage;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Friends.Controllers
 {
     public class MessageController : Controller
     {
-        // GET: Message
-        public ActionResult Index(string usernameA, string usernameB)
-        {
-            // TODO #22: 
-            // <query> Select all messages between two users A having usernameA and B having usernameB (2 cases from A to B and from B to A) </query>
-            // <input> usernameA, usernameB </input>
-            // <output> List of messages </output>
+        private readonly MessageStore _messageStore;
 
-            return View();
+        public MessageController(MessageStore messageStore)
+        {
+            _messageStore = messageStore;
+        }
+
+        // GET: Message
+        [Route("Message/{username}")]
+        public async Task<ActionResult> Index(string username)
+        {
+            if (HomeController.usernameSignedIn != null)
+            {
+                List<Message> messages = await _messageStore.GetMessages(username, HomeController.usernameSignedIn);
+
+                foreach (var msg in messages)
+                {
+                    msg.TimeOfSendingDate = new DateTime(msg.TimeOfSending);
+                }
+
+                return View(messages);
+            }
+            return RedirectToAction(nameof(Index), nameof(PersonController));
         }
 
         // GET: Message/Create
-        public ActionResult Create()
+        [HttpGet]
+        [Route("Message/Create/{username}")]
+        public ActionResult Create(string username)
         {
             return View();
         }
@@ -30,85 +45,26 @@ namespace Friends.Controllers
         // POST: Message/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string senderUsername, [Bind("ID,RecieverUsername,Content")] Message message)
+        [Route("Message/Create/{username}")]
+        public async Task<ActionResult> Create(string username, [Bind("ID,Content")] Message message)
         {
             try
             {
-                message.TimeOfSending = DateTime.Now;
-                message.SenderUsername = senderUsername;
+                if (HomeController.usernameSignedIn != null)
+                {
+                    message.TimeOfSending = DateTime.Now.Ticks;
+                    message.RecieverUsername = username;
+                    message.SenderUsername = HomeController.usernameSignedIn;
 
-                // TODO #23: 
-                // <query> Create a new Message given its properties </query>
-                // <input> Message(ID, SenderUsername, RecieverUsername, TimeOfSending, Content) </input>
-
-                return RedirectToAction(nameof(Index));
+                    await _messageStore.CreateMessage(message);
+                    return RedirectToAction(nameof(Index), new { username = message.RecieverUsername });
+                }
+                return RedirectToAction(nameof(Index), nameof(PersonController), new { username = message.RecieverUsername });
             }
             catch
             {
                 return View();
             }
-        }
-
-        // GET: Message/Edit/5
-        public ActionResult Edit(int id, string username)
-        {
-            // TODO #24: 
-            // <query> Select all properties of a Message of ID `id` IF its sender username = `username` </query>
-            // <input> id, username </input>
-            // <output> Message </output>
-
-            return View();
-        }
-
-        // POST: Message/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, string username, [Bind("Content")] Message message)
-        {
-            try
-            {
-                // TODO #25: 
-                // <query> Edit an old Message given its id and the new values of its properties IF its sender username = `username` </query>
-                // <input> id, username, Message(Content) </input>
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Message/Delete/5
-        public ActionResult Delete(int? id, string username)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var message = new Message();
-
-            if (message == null)
-            {
-                return NotFound();
-            }
-
-            // TODO #26 Duplicate of TODO #25
-
-            return View(message);
-        }
-
-        // POST: Message/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int? id)
-        {
-            // TODO #27: 
-            // <query>Delete a Message of ID `id`</query>
-            // <input>id</input>
-
-            return RedirectToAction(nameof(Index));
         }
     }
 }

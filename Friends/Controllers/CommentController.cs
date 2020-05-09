@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Friends.Models;
+using Friends.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,109 +11,59 @@ namespace Friends.Controllers
 {
     public class CommentController : Controller
     {
-        // GET: Comment
-        public ActionResult Index(int postID)
-        {
-            // TODO #28: 
-            // <query> Select all comments on a post with ID `postID`</query>
-            // <input> postID </input>
-            // <output> List of comments </output>
+        private readonly CommentStore _commentStore;
 
-            return View();
+        public CommentController(CommentStore commentStore)
+        {
+            _commentStore = commentStore;
+        }
+
+        // GET: Comment
+        [HttpGet]
+        [Route("Comment/{postID}")]
+        public async Task<ActionResult> Index(int postID)
+        {
+            List<Comment> comments = await _commentStore.GetComments(postID);
+
+            foreach (var comment in comments)
+            {
+                comment.TimeOfCreationDate = new DateTime(comment.TimeOfCreation);
+            }
+
+            return View(comments);
         }
 
         // GET: Comment/Create
-        public ActionResult Create()
+        [HttpGet]
+        [Route("Comment/Create/{postID}")]
+        public ActionResult Create(int postID)
         {
+            if (HomeController.usernameSignedIn == null)
+            {
+                RedirectToAction(nameof(SignIn), nameof(PersonController));
+            }  
             return View();
         }
 
         // POST: Comment/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int postID, string personUsername [Bind("ID,Content")] Comment comment)
+        [Route("Comment/Create/{postID}")]
+        public async Task<ActionResult> Create(int postID, [Bind("ID,Content")] Comment comment)
         {
+            if (HomeController.usernameSignedIn == null)
+            {
+                RedirectToAction(nameof(SignIn), nameof(PersonController));
+            }
             try
             {
-                comment.TimeOfCreation = DateTime.Now;
+                comment.TimeOfCreation = DateTime.Now.Ticks;
                 comment.PostID = postID;
-                comment.PersonUsername = personUsername;
+                comment.PersonUsername = HomeController.usernameSignedIn;
 
-                // TODO #29: 
-                // <query> Create a new Comment given its properties </query>
-                // <input> Comment(ID, Content, PersonUsername, PostID, TimeOfSending) </input>
+                await _commentStore.CreateComment(comment);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Comment/Edit/5
-        public ActionResult Edit(int id, string username)
-        {
-            // TODO #30: 
-            // <query> Select all properties of a Comment of ID `id` IF its owner username = `username`</query>
-            // <input> id, username </input>
-            // <output> Message </output>
-
-            return View();
-        }
-
-        // POST: Comment/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, string username, [Bind("Content")] Comment comment)
-        {
-            try
-            {
-                // TODO #31: 
-                // <query> Edit an old Comment given its id and the new values of its properties IF its owner username = `username` </query>
-                // <input> id, username, Message(Content) </input>
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Comment/Delete/5
-        public ActionResult Delete(int? id, string username)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var comment = new Comment();
-            
-            // TODO #32 Duplicate of TODO #30
-
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-
-            return View(comment);
-        }
-
-        // POST: Comment/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                // TODO #33: 
-                // <query>Delete a Message of ID `id`</query>
-                // <input>id</input>
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { postID = postID });
             }
             catch
             {

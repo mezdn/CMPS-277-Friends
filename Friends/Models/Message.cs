@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Friends.Models
 {
@@ -7,12 +8,17 @@ namespace Friends.Models
         public int ID { get; set; }
 
         // FK to Person
+        [DisplayName("Sender")]
         public string SenderUsername { get; set; }
 
         // FK to Person
+        [DisplayName("Reciever")]
         public string RecieverUsername { get; set; }
 
-        public DateTime TimeOfSending { get; set; }
+        [DisplayName("Time of Sending")]
+        public DateTime TimeOfSendingDate { get; set; }
+
+        public long TimeOfSending { get; set; }
 
         public string Content { get; set; }
     }

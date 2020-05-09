@@ -1,4 +1,5 @@
-﻿@model Friends.Models.Person
+﻿@model Friends.Models.IsFriendObject
+@using Friends.Controllers; 
 
 @{
     ViewData["Title"] = "Details";
@@ -7,42 +8,71 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Category</h4>
+    <h4>Person</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Username)
+        @if (HomeController.usernameSignedIn != null && HomeController.usernameSignedIn != Model.Person.Username)
+        {
+            <dt class="col-sm-2">
+
+            </dt>
+            <dd class="col-sm-10">
+                <a asp-controller="Message" asp-action="Index" asp-route-username="@Model.Person.Username">Chat</a>
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Username)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Username)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Username)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DisplayName)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.DisplayName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DisplayName)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.DisplayName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AreaOfExpertiseName)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.AreaOfExpertiseName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AreaOfExpertiseName)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.AreaOfExpertiseName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfBirth)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.DateOfBirthDate)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfBirth)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.DateOfBirthDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Country)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Country)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Country)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Country)
         </dd>
+        @if (HomeController.usernameSignedIn != Model.Person.Username)
+        {
+            <dt class="col-sm-2">
+                Is Friend
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model != null && Model.isFriend && Friends.Controllers.HomeController.usernameSignedIn != null)
+                {
+                    <i class="fas fa-check" style="color: forestgreen"></i>
+                    <a asp-action="RemoveFriend" asp-route-username="@Model.Person.Username">Remove Friend</a>
+                }
+                else
+                {
+                    <i class="fas fa-times" style="color: red"></i>
+                    if (Friends.Controllers.HomeController.usernameSignedIn != null)
+                    {
+                        <a asp-action="AddFriend" asp-route-username="@Model.Person.Username">Add Friend</a>
+                    }
+                }
+            </dd>
+        }
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Username">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

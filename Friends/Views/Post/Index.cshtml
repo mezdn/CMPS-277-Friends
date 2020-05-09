@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Posts</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,13 +16,16 @@
                 @Html.DisplayNameFor(model => model.PersonUsername)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeOfCreation)
+                @Html.DisplayNameFor(model => model.TimeOfCreationDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CategoryName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group)
             </th>
             <th></th>
         </tr>
@@ -35,7 +38,7 @@
                     @Html.DisplayFor(modelItem => item.PersonUsername)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TimeOfCreation)
+                    @Html.DisplayFor(modelItem => item.TimeOfCreationDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CategoryName)
@@ -44,9 +47,16 @@
                     @Html.DisplayFor(modelItem => item.Content)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    @Html.DisplayFor(modelItem => item.Group)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                    @if (item.PersonUsername == Friends.Controllers.HomeController.usernameSignedIn)
+                    {
+		                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> 
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    }
+                    
                 </td>
             </tr>
         }
