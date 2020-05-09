@@ -1,7 +1,12 @@
 ﻿@model Friends.Models.Post
+@using Friends.Controllers;
 
 @{
     ViewData["Title"] = "Create";
+
+    var categories = PostController.CategoryNames;
+    var groups = PostController.GroupNames.ToList();
+    groups.Add("None");
 }
 
 <h1>Create</h1>
@@ -14,7 +19,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CategoryName" class="control-label"></label>
-                <input asp-for="CategoryName" class="form-control" />
+                <select asp-for="CategoryName" class="form-control" asp-items="new SelectList(categories)"></select>
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -23,9 +28,9 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GroupID" class="control-label"></label>
-                <input asp-for="GroupID" class="form-control" />
-                <span asp-validation-for="GroupID" class="text-danger"></span>
+                <label asp-for="Group" class="control-label"></label>
+                <select asp-for="Group" class="form-control" asp-items="new SelectList(groups)"></select>
+                <span asp-validation-for="Group" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

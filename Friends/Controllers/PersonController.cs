@@ -4,6 +4,7 @@ using Friends.Storage;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Bcpg;
 using SQLitePCL;
+using System;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -28,6 +29,11 @@ namespace Friends.Controllers
         public async Task<ActionResult> Index()
         {
             List<Person> persons = await _personStore.GetPersons();
+
+            foreach (var person in persons)
+            {
+                person.DateOfBirthDate = new DateTime(person.DateOfBirth);
+            }
             return View(persons);
         }
 
@@ -36,6 +42,7 @@ namespace Friends.Controllers
         {
             //IsFriendObject has username2 field. Null if person usernameB is not friends with person with usernameA
             IsFriendObject isFriendObject = await _personStore.GetPerson(username, HomeController.usernameSignedIn);
+            isFriendObject.Person.DateOfBirthDate = new DateTime(isFriendObject.Person.DateOfBirth);
             return View(isFriendObject);
         }
 

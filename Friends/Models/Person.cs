@@ -14,9 +14,9 @@ namespace Friends.Models
         [DisplayName("Display Name")]
         public string DisplayName { get; set; }
         
-        [DisplayName("Date of Birth")]
         public long DateOfBirth { get; set; }
 
+        [DisplayName("Date of Birth")]
         public DateTime DateOfBirthDate { get; set; }
         
         public string Country { get; set; }

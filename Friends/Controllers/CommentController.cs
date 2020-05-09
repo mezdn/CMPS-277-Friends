@@ -19,40 +19,51 @@ namespace Friends.Controllers
         }
 
         // GET: Comment
+        [HttpGet]
+        [Route("Comment/{postID}")]
         public async Task<ActionResult> Index(int postID)
         {
-            // TODO #28: Done
-            // <query> Select all comments on a post with ID `postID`</query>
-            // <input> postID </input>
-            // <output> List of comments </output>
             List<Comment> comments = await _commentStore.GetComments(postID);
+
+            foreach (var comment in comments)
+            {
+                comment.TimeOfCreationDate = new DateTime(comment.TimeOfCreation);
+            }
+
             return View(comments);
         }
 
         // GET: Comment/Create
-        public ActionResult Create()
+        [HttpGet]
+        [Route("Comment/Create/{postID}")]
+        public ActionResult Create(int postID)
         {
+            if (HomeController.usernameSignedIn == null)
+            {
+                RedirectToAction(nameof(SignIn), nameof(PersonController));
+            }  
             return View();
         }
 
         // POST: Comment/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(int postID, string personUsername, [Bind("ID,Content")] Comment comment)
+        [Route("Comment/Create/{postID}")]
+        public async Task<ActionResult> Create(int postID, [Bind("ID,Content")] Comment comment)
         {
+            if (HomeController.usernameSignedIn == null)
+            {
+                RedirectToAction(nameof(SignIn), nameof(PersonController));
+            }
             try
             {
-                comment.TimeOfCreation = DateTimeOffset.Now.ToUnixTimeSeconds();
+                comment.TimeOfCreation = DateTime.Now.Ticks;
                 comment.PostID = postID;
-                comment.PersonUsername = personUsername;
-
-                // TODO #29: Done
-                // <query> Create a new Comment given its properties </query>
-                // <input> Comment(ID, Content, PersonUsername, PostID, TimeOfSending) </input>
+                comment.PersonUsername = HomeController.usernameSignedIn;
 
                 await _commentStore.CreateComment(comment);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { postID = postID });
             }
             catch
             {
