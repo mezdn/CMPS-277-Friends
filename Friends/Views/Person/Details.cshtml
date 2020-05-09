@@ -64,7 +64,10 @@
                 else
                 {
                     <i class="fas fa-times" style="color: red"></i>
-                    <a asp-action="AddFriend" asp-route-username="@Model.Person.Username">Add Friend</a>
+                    if (Friends.Controllers.HomeController.usernameSignedIn != null)
+                    {
+                        <a asp-action="AddFriend" asp-route-username="@Model.Person.Username">Add Friend</a>
+                    }
                 }
             </dd>
         }

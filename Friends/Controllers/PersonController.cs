@@ -56,7 +56,7 @@ namespace Friends.Controllers
         // POST: Person/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(string username, [Bind("Username,AreaOfExpertiseName,DisplayName,DateOfBirth,Country,Password")] Person person)
+        public async Task<ActionResult> Create(string username, [Bind("Username,AreaOfExpertiseName,DisplayName,DateOfBirthDate,Country,Password")] Person person)
         {
             try
             {
@@ -98,12 +98,13 @@ namespace Friends.Controllers
             if (validLogin == 1)
             {
                 HomeController.usernameSignedIn = model.Username;
+                return RedirectToAction(nameof(Index), "");
             }
             else
             {
                 HomeController.usernameSignedIn = null;
+                return View();
             }
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

@@ -21,7 +21,11 @@ namespace Friends.Storage
             var ret = new List<Message>();
 
             var cmd = MySqlDatabase.Connection.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT id, content, recieverUsername, senderUsername, timeOfSending FROM message";
+            cmd.CommandText = @"SELECT id, content, recieverUsername, senderUsername, timeOfSending FROM message
+                                WHERE (senderUsername = @user1 AND recieverUsername = @user2) OR (senderUsername = @user2 AND recieverUsername = @user1)";
+
+            cmd.Parameters.AddWithValue("@user1", user1);
+            cmd.Parameters.AddWithValue("@user2", user2);
 
             using (var reader = await cmd.ExecuteReaderAsync())
             {

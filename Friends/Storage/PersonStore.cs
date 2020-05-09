@@ -51,7 +51,7 @@ namespace Friends.Storage
 
             // TODO: Test correctness for the following query
             cmd.CommandText = @"SELECT p.username, p.displayName, p.country, p.dateOfBirth, p.areaOfExpertiseName, (
-                                    SELECT COUNT(*) FROM friends f WHERE f.user1 = p.username AND f.user2 = @usernameB)
+                                    SELECT COUNT(*) FROM friends f WHERE (f.user1 = p.username AND f.user2 = @usernameB) OR (f.user2 = p.username AND f.user1 = @usernameB))
                                 FROM person as p
                                 WHERE p.username = @usernameA";
 
